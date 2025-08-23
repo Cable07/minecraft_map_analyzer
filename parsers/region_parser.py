@@ -26,6 +26,11 @@ if Option == "1":
     y_coord = int(input("y = "))
     z_coord = int(input("z = "))
 
+    if(x_coord < 0):
+        x_coord -= 1
+    if(z_coord < 0):
+        z_coord -= 1
+
     region_x = str(x_coord // 512)
     region_z = str(z_coord // 512)
 
