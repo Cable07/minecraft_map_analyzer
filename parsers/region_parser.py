@@ -16,24 +16,14 @@ REQUIRED REGION FILES AT COORDS -> r.0.0.mca , r.-2.-2.mca
 REQUIRED REGION FILES IN BETWEEN -> r.0.-1.mca , r.0.-2.mca , r.-1.0.mca , r.-1.-1.mca , r.-1.-2.mca , r.-2.0.mca , r.-2.-1.mca
 """
 
-Option = input("This is the block parser. \nEnter 1 if you would you like what kind of block is at a particular coordinate or enter 2 if you would like to know the block data for an area.\n")
+def analyze_block(x, y, z):
+    if(x < 0):
+        x -= 1
+    if(z < 0):
+        z -= 1
 
-world_name = input("\nWhat is the name of your world?\n")
-
-file_path = "C:/Users/cstoc/AppData/Roaming/.minecraft/saves/" + world_name + "/region/r."
-
-if Option == "1":
-    x_coord = int(input("x = "))
-    y_coord = int(input("y = "))
-    z_coord = int(input("z = "))
-
-    if(x_coord < 0):
-        x_coord -= 1
-    if(z_coord < 0):
-        z_coord -= 1
-
-    region_x = str(x_coord // 512)
-    region_z = str(z_coord // 512)
+    region_x = str(x // 512)
+    region_z = str(z // 512)
 
     region = region_x + "." + region_z + ".mca"
 
@@ -50,9 +40,22 @@ if Option == "1":
 
     chunk = anvil.Chunk.from_region(region, local_chunk_x, local_chunk_z)
 
-    block = chunk.get_block(local_x_coord, y_coord, local_z_coord)
+    block = chunk.get_block(local_x_coord, y, local_z_coord)
 
-    print(block.id) # air
+    print(block.id)
+
+Option = input("This is the block parser. \nEnter 1 if you would you like what kind of block is at a particular coordinate or enter 2 if you would like to know the block data for an area.\n")
+
+world_name = input("\nWhat is the name of your world?\n")
+
+file_path = "C:/Users/cstoc/AppData/Roaming/.minecraft/saves/" + world_name + "/region/r."
+
+if Option == "1":
+    x_coord = int(input("x = "))
+    y_coord = int(input("y = "))
+    z_coord = int(input("z = "))
+
+    analyze_block(x_coord, y_coord, z_coord)
 
 elif Option == "2":
     print("I'll do my best :(")
@@ -67,6 +70,9 @@ elif Option == "2":
     #normalize inputs so that smaller numbers are always assigned to x1, y1, z1
     #x1, x2 = min(x1, x2), max(x1, x2)
     ##z1, z2 = min(z1, z2), max(z1, z2)
+
+    analyze_block(x1, y1, z1)
+    analyze_block(x2, y2, z2)
 
     #calculates the region values for each coord
     region_x1 = str(x1 // 512)
