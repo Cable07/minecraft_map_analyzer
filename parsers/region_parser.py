@@ -1,4 +1,5 @@
 import anvil
+from collections import Counter
 
 """ 
 Region parser needs to get user input of coords and determine the
@@ -42,13 +43,14 @@ def analyze_block(x, y, z):
 
     block = chunk.get_block(local_x_coord, y, local_z_coord)
 
-    print(block.id)
+    #print(block.id)
+    return(block.id)
 
-Option = input("This is the block parser. \nEnter 1 if you would you like what kind of block is at a particular coordinate or enter 2 if you would like to know the block data for an area.\n")
-
-world_name = input("\nWhat is the name of your world?\n")
+Option = input("\nThis is the block parser. \n\nEnter 1 if you would you like what kind of block is at a particular coordinate or enter 2 if you would like to know the block data for an area.\n")
+world_name = input("\nType the name of your world: ")
 
 file_path = "C:/Users/cstoc/AppData/Roaming/.minecraft/saves/" + world_name + "/region/r."
+block_counts = Counter()
 
 if Option == "1":
     x_coord = int(input("x = "))
@@ -58,7 +60,6 @@ if Option == "1":
     analyze_block(x_coord, y_coord, z_coord)
 
 elif Option == "2":
-    print("I'll do my best :(")
     x1 = int(input("\n1st x = "))
     y1 = int(input("\n1st y = "))
     z1 = int(input("\n1st z = "))
@@ -75,17 +76,22 @@ elif Option == "2":
     og_y = y1
     og_z = z1
 
-    print(x1, x2, y1, y2, z1, z2)
     while(x1 <= x2):
         while(y1 <= y2):
             while(z1 <= z2):
-                analyze_block(x1, y1, z1)
+                block_id = analyze_block(x1, y1, z1)
+                if block_id in block_counts:
+                    block_counts[block_id] += 1
+                else:
+                    block_counts[block_id] = 1
                 z1+=1
             y1+=1
             z1 = og_z
         x1+=1
         y1 = og_y
 
+    for block, count in block_counts.most_common():
+        print(f"{block}: {count}")
 
 else:
     print("YOU WRONG")
